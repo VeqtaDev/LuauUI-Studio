@@ -1,0 +1,48 @@
+[package]
+name = "luauui"
+version = "0.1.0"
+edition = "2021"
+description = "Live preview for Roblox Luau UIs: native window, hot reload, UI rack and an MCP server."
+
+[lib]
+path = "src/lib.rs"
+
+[[bin]]
+name = "luauui"
+path = "src/bin/app.rs"
+
+[[bin]]
+name = "luauui-mcp"
+path = "src/bin/mcp.rs"
+
+[dependencies]
+mlua = { version = "0.12", features = ["luau", "serde"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+anyhow = "1"
+base64 = "0.22"
+
+# app only
+tao = "0.37"
+wry = "0.57"
+notify = "8"
+tiny_http = "0.12"
+png = "0.17"
+open = "5"
+rfd = "0.17"
+ureq = "2"
+
+[target.'cfg(windows)'.dependencies]
+windows-sys = { version = "0.59", features = [
+  "Win32_Foundation",
+  "Win32_Graphics_Gdi",
+  "Win32_Storage_Xps",
+  "Win32_System_Console",
+  "Win32_UI_WindowsAndMessaging",
+] }
+
+[profile.release]
+opt-level = 3
+lto = "thin"
+codegen-units = 4
+strip = true
